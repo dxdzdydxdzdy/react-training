@@ -1,6 +1,7 @@
 'use client'
 
-import type { Body, Engine, Render } from 'matter-js'
+import type { Body, Constraint, Engine, Render } from 'matter-js'
+
 import { useEffect, useRef, useState } from 'react'
 
 interface BoxIconProps {
@@ -181,7 +182,7 @@ const FooterGame = () => {
 			World.add(engine.world, mouseConstraint)
 
 			// ИСПРАВЛЕННАЯ ОБРАБОТКА TOUCH СОБЫТИЙ
-			let touchConstraint: any = null
+			let touchConstraint: Constraint | null = null
 
 			const handleTouchStart = (e: TouchEvent): void => {
 				const touch = e.touches[0]
@@ -194,7 +195,8 @@ const FooterGame = () => {
 				}
 
 				// Обновляем позицию мыши в Matter.js
-				Mouse.setPosition(mouse, mousePosition)
+				mouse.position.x = mousePosition.x
+				mouse.position.y = mousePosition.y
 
 				// Ищем тело под touch
 				const bodies = Matter.Query.point(engine.world.bodies, mousePosition)
@@ -229,7 +231,8 @@ const FooterGame = () => {
 				}
 
 				// Обновляем позицию
-				Mouse.setPosition(mouse, mousePosition)
+				mouse.position.x = mousePosition.x
+				mouse.position.y = mousePosition.y
 
 				// Если есть активный constraint, обновляем его pointA
 				if (touchConstraint) {
