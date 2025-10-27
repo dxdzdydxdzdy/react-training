@@ -173,7 +173,7 @@ const FooterGame = () => {
 			// Создаем начальные SVG элементы
 			createInitialSVGElements(boxSize, startX, startY)
 
-			// Добавляем управление мышью
+			// Добавляем управление мышью для десктопа
 			const mouse = Mouse.create(render.canvas)
 			const mouseConstraint = MouseConstraint.create(engine, {
 				mouse: mouse,
@@ -184,6 +184,44 @@ const FooterGame = () => {
 			})
 
 			World.add(engine.world, mouseConstraint)
+
+			// Добавляем обработку touch событий для мобильных
+			const handleTouchStart = (e: TouchEvent): void => {
+				e.preventDefault()
+				const touch = e.touches[0]
+				const mouseEvent = new MouseEvent('mousedown', {
+					clientX: touch.clientX,
+					clientY: touch.clientY,
+				})
+				render.canvas.dispatchEvent(mouseEvent)
+			}
+
+			const handleTouchMove = (e: TouchEvent): void => {
+				e.preventDefault()
+				const touch = e.touches[0]
+				const mouseEvent = new MouseEvent('mousemove', {
+					clientX: touch.clientX,
+					clientY: touch.clientY,
+				})
+				render.canvas.dispatchEvent(mouseEvent)
+			}
+
+			const handleTouchEnd = (e: TouchEvent): void => {
+				e.preventDefault()
+				const mouseEvent = new MouseEvent('mouseup')
+				render.canvas.dispatchEvent(mouseEvent)
+			}
+
+			// Добавляем touch события
+			render.canvas.addEventListener('touchstart', handleTouchStart, {
+				passive: false,
+			})
+			render.canvas.addEventListener('touchmove', handleTouchMove, {
+				passive: false,
+			})
+			render.canvas.addEventListener('touchend', handleTouchEnd, {
+				passive: false,
+			})
 
 			// Функция для обновления позиций SVG
 			const updateSVGPositions = (): void => {
@@ -263,6 +301,13 @@ const FooterGame = () => {
 				Render.stop(render)
 				World.clear(engine.world, false)
 				Engine.clear(engine)
+
+				// Удаляем touch события
+				if (render.canvas) {
+					render.canvas.removeEventListener('touchstart', handleTouchStart)
+					render.canvas.removeEventListener('touchmove', handleTouchMove)
+					render.canvas.removeEventListener('touchend', handleTouchEnd)
+				}
 			}
 		}
 
