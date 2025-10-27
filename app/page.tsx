@@ -1,65 +1,361 @@
-import Image from "next/image";
+import DeveloperCard from './components/DeveloperCard'
+
+const developers = [
+	{
+		id: 1,
+		name: 'Денис Кузичев',
+		specialisation: 'Middle Webdev',
+		stack: ['node', 'nest', 'next', 'express', 'react', 'SQL'],
+		info: 'Родился в Иркутске в 2000-ом году, занимаюсь спортом, КМС по боксу. Обучался ядерной физике в СПбПУ Петра Великого. Незаконченное высшее образование. Руководитель отдела разработки в холдинге SellerGroup',
+		avatarSrc: '/IMG_4697.jpg',
+		link: 'https://vk.com/dxdzdy',
+		experience: 7,
+		isActive: true,
+		projects: [
+			{
+				id: 1,
+				name: 'E-commerce Platform',
+				description: 'Многофункциональная платформа для онлайн-продаж',
+				year: 2024,
+				tech: ['Next.js', 'Node.js', 'PostgreSQL'],
+			},
+			{
+				id: 2,
+				name: 'B2B Marketplace',
+				description: 'Площадка для бизнес-закупок',
+				year: 2023,
+				tech: ['React', 'Express', 'MongoDB'],
+			},
+			{
+				id: 3,
+				name: 'CRM System',
+				description: 'Система управления клиентскими отношениями',
+				year: 2022,
+				tech: ['Vue.js', 'NestJS', 'MySQL'],
+			},
+		],
+	},
+	{
+		id: 2,
+		name: 'Анна Петрова',
+		specialisation: 'Frontend Developer',
+		stack: ['React', 'TypeScript', 'Redux', 'Vue', 'SASS', 'Webpack'],
+		info: 'Выпускница МГТУ им. Баумана. Увлекается digital art и созданием UI-китов. Работала в Яндексе 3 года.',
+		avatarSrc: '/IMG_4056.JPG',
+		link: 'https://github.com/annapetrova',
+		experience: 5,
+		isActive: false,
+		projects: [
+			{
+				id: 1,
+				name: 'Design System',
+				description: 'Дизайн-система для корпоративного использования',
+				year: 2024,
+				tech: ['React', 'Storybook', 'Styled Components'],
+			},
+			{
+				id: 2,
+				name: 'E-learning Platform',
+				description: 'Платформа для онлайн-обучения с интерактивным UI',
+				year: 2023,
+				tech: ['Vue.js', 'TypeScript', 'WebGL'],
+			},
+			{
+				id: 3,
+				name: 'Data Visualization Dashboard',
+				description: 'Дашборд для визуализации бизнес-метрик',
+				year: 2022,
+				tech: ['D3.js', 'React', 'Redux'],
+			},
+		],
+	},
+	{
+		id: 3,
+		name: 'Максим Сидоров',
+		specialisation: 'Backend Architect',
+		stack: ['Java', 'Spring', 'Kotlin', 'PostgreSQL', 'Redis', 'Docker'],
+		info: '15 лет в enterprise-разработке. Преподавал в МИФИ. Автор курса по микросервисной архитектуре.',
+		avatarSrc: '/IMG_4049.JPG',
+		link: 'https://linkedin.com/in/maximsidorov',
+		experience: 15,
+		isActive: false,
+		projects: [
+			{
+				id: 1,
+				name: 'Banking Core System',
+				description: 'Ядро банковской системы для крупного банка',
+				year: 2024,
+				tech: ['Java', 'Spring Boot', 'Oracle DB'],
+			},
+			{
+				id: 2,
+				name: 'Microservices Platform',
+				description: 'Платформа для микросервисной архитектуры',
+				year: 2023,
+				tech: ['Kotlin', 'Kubernetes', 'Kafka'],
+			},
+			{
+				id: 3,
+				name: 'Payment Gateway',
+				description: 'Шлюз для обработки платежей',
+				year: 2022,
+				tech: ['Java', 'Redis', 'RabbitMQ'],
+			},
+		],
+	},
+	{
+		id: 4,
+		name: 'Елена Васнецова',
+		specialisation: 'Fullstack Developer',
+		stack: ['Python', 'Django', 'React', 'PostgreSQL', 'Celery', 'AWS'],
+		info: 'Бывший биоинформатик. Создала стартап в edtech. Люблю совмещать код и дизайн.',
+		avatarSrc: '/IMG_3733.JPG',
+		link: 'https://behance.net/elenav',
+		experience: 3,
+		isActive: true,
+		projects: [
+			{
+				id: 1,
+				name: 'EdTech Startup',
+				description: 'Платформа для интерактивного обучения школьников',
+				year: 2024,
+				tech: ['Python', 'Django', 'React'],
+			},
+			{
+				id: 2,
+				name: 'Bioinformatics Tool',
+				description: 'Инструмент для анализа геномных данных',
+				year: 2023,
+				tech: ['Python', 'Pandas', 'BioPython'],
+			},
+			{
+				id: 3,
+				name: 'Science Blog',
+				description: 'Блог с интерактивными научными визуализациями',
+				year: 2022,
+				tech: ['JavaScript', 'Three.js', 'Node.js'],
+			},
+		],
+	},
+	{
+		id: 5,
+		name: 'Артем Козлов',
+		specialisation: 'Mobile Developer',
+		stack: [
+			'Swift',
+			'Kotlin',
+			'React Native',
+			'Firebase',
+			'GraphQL',
+			'iOS SDK',
+		],
+		info: 'Разработал 20+ приложений в AppStore. Жил и работал в Кремниевой долине 2 года.',
+		avatarSrc: '/IMG_3294.JPG',
+		link: 'https://twitter.com/artemkozlov',
+		experience: 6,
+		isActive: true,
+		projects: [
+			{
+				id: 1,
+				name: 'Fitness Tracker',
+				description: 'Приложение для отслеживания тренировок и питания',
+				year: 2024,
+				tech: ['Swift', 'HealthKit', 'Firebase'],
+			},
+			{
+				id: 2,
+				name: 'Social Media App',
+				description: 'Мобильное приложение социальной сети',
+				year: 2023,
+				tech: ['React Native', 'GraphQL', 'AWS'],
+			},
+			{
+				id: 3,
+				name: 'E-commerce Mobile',
+				description: 'Мобильное приложение интернет-магазина',
+				year: 2022,
+				tech: ['Kotlin', 'Retrofit', 'Room DB'],
+			},
+		],
+	},
+	{
+		id: 6,
+		name: 'София Иванова',
+		specialisation: 'DevOps Engineer',
+		stack: ['Kubernetes', 'Terraform', 'AWS', 'Prometheus', 'Ansible', 'Linux'],
+		info: 'Эксперт по облачным технологиям. Организует митапы для женщин в IT. Любит хайкинг в горах.',
+		avatarSrc: '/IMG_2932.JPG',
+		link: 'https://medium.com/@sofiaivanova',
+		experience: 10,
+		isActive: false,
+		projects: [
+			{
+				id: 1,
+				name: 'Cloud Migration',
+				description: 'Миграция инфраструктуры в AWS',
+				year: 2024,
+				tech: ['Terraform', 'Kubernetes', 'AWS'],
+			},
+			{
+				id: 2,
+				name: 'CI/CD Pipeline',
+				description: 'Система непрерывной интеграции и доставки',
+				year: 2023,
+				tech: ['Jenkins', 'Docker', 'GitLab CI'],
+			},
+			{
+				id: 3,
+				name: 'Monitoring System',
+				description: 'Система мониторинга для микросервисов',
+				year: 2022,
+				tech: ['Prometheus', 'Grafana', 'Alertmanager'],
+			},
+		],
+	},
+	{
+		id: 7,
+		name: 'Дмитрий Новиков',
+		specialisation: 'Data Scientist',
+		stack: ['Python', 'PyTorch', 'Pandas', 'SQL', 'ML', 'TensorFlow'],
+		info: 'Кандидат технических наук. Специализация - компьютерное зрение. Участвовал в разработке беспилотных автомобилей.',
+		avatarSrc: '/IMG_2731.JPG',
+		link: 'https://kaggle.com/dmitrynovikov',
+		experience: 5,
+		isActive: true,
+		projects: [
+			{
+				id: 1,
+				name: 'Autonomous Driving',
+				description: 'Система компьютерного зрения для беспилотных автомобилей',
+				year: 2024,
+				tech: ['Python', 'PyTorch', 'OpenCV'],
+			},
+			{
+				id: 2,
+				name: 'Medical Image Analysis',
+				description: 'Анализ медицинских изображений для диагностики',
+				year: 2023,
+				tech: ['TensorFlow', 'CNN', 'DICOM'],
+			},
+			{
+				id: 3,
+				name: 'Recommendation System',
+				description: 'Система рекомендаций для стриминговой платформы',
+				year: 2022,
+				tech: ['Python', 'Scikit-learn', 'Apache Spark'],
+			},
+		],
+	},
+	{
+		id: 8,
+		name: 'Мария Смирнова',
+		specialisation: 'UX/UI Engineer',
+		stack: ['Figma', 'React', 'Framer', 'Three.js', 'GSAP', 'CSS3'],
+		info: 'Перешла из графического дизайна в веб-разработку. Создала дизайн-систему для крупного банка.',
+		avatarSrc: '/IMG_2727.PNG',
+		link: 'https://dribbble.com/mariasmirnova',
+		experience: 2,
+		isActive: true,
+		projects: [
+			{
+				id: 1,
+				name: 'Banking Design System',
+				description: 'Дизайн-система для мобильного и веб-банка',
+				year: 2024,
+				tech: ['Figma', 'React', 'Storybook'],
+			},
+			{
+				id: 2,
+				name: 'Interactive Portfolio',
+				description: 'Интерактивное портфолио с 3D элементами',
+				year: 2023,
+				tech: ['Three.js', 'GSAP', 'React'],
+			},
+			{
+				id: 3,
+				name: 'E-commerce Redesign',
+				description: 'Редизайн интерфейса интернет-магазина',
+				year: 2022,
+				tech: ['Framer', 'CSS3', 'JavaScript'],
+			},
+		],
+	},
+	{
+		id: 9,
+		name: 'Иван Волков',
+		specialisation: 'Blockchain Developer',
+		stack: ['Solidity', 'Web3.js', 'Ethereum', 'Rust', 'Node.js', 'MongoDB'],
+		info: 'Основал DeFi-протокол. Проводит воркшопы по смарт-контрактам. Увлекается криптоискусством.',
+		avatarSrc: '/IMG_2640.JPG',
+		link: 'https://gitcoin.co/ivanvolkov',
+		experience: 1,
+		isActive: false,
+		projects: [
+			{
+				id: 1,
+				name: 'DeFi Protocol',
+				description: 'Децентрализованный финансовый протокол',
+				year: 2024,
+				tech: ['Solidity', 'Web3.js', 'Ethereum'],
+			},
+			{
+				id: 2,
+				name: 'NFT Marketplace',
+				description: 'Площадка для торговли NFT',
+				year: 2023,
+				tech: ['React', 'IPFS', 'Smart Contracts'],
+			},
+			{
+				id: 3,
+				name: 'Crypto Wallet',
+				description: 'Некастодиальный криптокошелек',
+				year: 2022,
+				tech: ['React Native', 'Web3', 'Node.js'],
+			},
+		],
+	},
+	{
+		id: 10,
+		name: 'Алексей Попов',
+		specialisation: 'Game Developer',
+		stack: ['Unity', 'C#', 'Blender', 'Unreal Engine', 'C++', 'OpenGL'],
+		info: 'Работал в Ubisoft и Wargaming. Разрабатывал мобильные хита. Создал инди-студию с друзьями.',
+		avatarSrc: '/IMG_2078.PNG',
+		link: 'https://itch.io/alexeypopov',
+		experience: 10,
+		isActive: false,
+		projects: [
+			{
+				id: 1,
+				name: 'Mobile RPG Game',
+				description: 'Мобильная RPG с мультиплеером',
+				year: 2024,
+				tech: ['Unity', 'C#', 'Photon'],
+			},
+			{
+				id: 2,
+				name: 'VR Shooter',
+				description: 'Шутер с виртуальной реальностью',
+				year: 2023,
+				tech: ['Unreal Engine', 'C++', 'SteamVR'],
+			},
+			{
+				id: 3,
+				name: 'Indie Puzzle Game',
+				description: 'Инди-игра в жанре головоломки',
+				year: 2022,
+				tech: ['Unity', 'C#', 'Blender'],
+			},
+		],
+	},
+]
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+	return (
+		<div className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 p-4 sm:p-6 gap-3'>
+			{developers.map(card => (
+				<DeveloperCard key={card.id} credentials={card} />
+			))}
+		</div>
+	)
 }
