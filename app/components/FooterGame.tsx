@@ -56,7 +56,6 @@ const FooterGame = () => {
 			const { Engine, Render, Runner, Bodies, World, Mouse, MouseConstraint } =
 				Matter
 
-			// Создаем движок
 			const engine = Engine.create({
 				gravity: { x: 0, y: 0.5 },
 			})
@@ -65,7 +64,6 @@ const FooterGame = () => {
 			const container = containerRef.current as HTMLDivElement
 			const { width, height } = container.getBoundingClientRect()
 
-			// Создаем невидимый рендер для физики
 			const render = Render.create({
 				element: container,
 				engine: engine,
@@ -79,7 +77,6 @@ const FooterGame = () => {
 			})
 			renderRef.current = render
 
-			// Создаем границы
 			const walls = [
 				Bodies.rectangle(width / 2, height + 25, width, 50, {
 					isStatic: true,
@@ -101,7 +98,6 @@ const FooterGame = () => {
 
 			World.add(engine.world, walls)
 
-			// Создаем 19 коробок в левом нижнем углу
 			const boxSize = 60
 			const initialBoxes: Body[] = []
 			const startX = 100
@@ -170,10 +166,9 @@ const FooterGame = () => {
 				}
 			}
 
-			// Создаем начальные SVG элементы
 			createInitialSVGElements(boxSize, startX, startY)
 
-			// Добавляем управление мышью для десктопа
+			// Mouse для десктопа
 			const mouse = Mouse.create(render.canvas)
 			const mouseConstraint = MouseConstraint.create(engine, {
 				mouse: mouse,
@@ -185,45 +180,84 @@ const FooterGame = () => {
 
 			World.add(engine.world, mouseConstraint)
 
-			// Добавляем обработку touch событий для мобильных
+			// ИСПРАВЛЕННАЯ ОБРАБОТКА TOUCH СОБЫТИЙ
+			let touchConstraint: any = null
+
 			const handleTouchStart = (e: TouchEvent): void => {
-				e.preventDefault()
 				const touch = e.touches[0]
-				const mouseEvent = new MouseEvent('mousedown', {
-					clientX: touch.clientX,
-					clientY: touch.clientY,
-				})
-				render.canvas.dispatchEvent(mouseEvent)
+				const rect = render.canvas.getBoundingClientRect()
+
+				// Правильный расчет координат относительно canvas
+				const mousePosition = {
+					x: touch.clientX - rect.left,
+					y: touch.clientY - rect.top,
+				}
+
+				// Обновляем позицию мыши в Matter.js
+				Mouse.setPosition(mouse, mousePosition)
+
+				// Ищем тело под touch
+				const bodies = Matter.Query.point(engine.world.bodies, mousePosition)
+
+				if (bodies.length > 0) {
+					const body = bodies[0]
+
+					// Создаем constraint для перетаскивания
+					touchConstraint = Matter.Constraint.create({
+						pointA: mousePosition,
+						bodyB: body,
+						pointB: {
+							x: mousePosition.x - body.position.x,
+							y: mousePosition.y - body.position.y,
+						},
+						stiffness: 0.2,
+						render: { visible: false },
+					})
+
+					World.add(engine.world, touchConstraint)
+				}
 			}
 
 			const handleTouchMove = (e: TouchEvent): void => {
 				e.preventDefault()
 				const touch = e.touches[0]
-				const mouseEvent = new MouseEvent('mousemove', {
-					clientX: touch.clientX,
-					clientY: touch.clientY,
-				})
-				render.canvas.dispatchEvent(mouseEvent)
+				const rect = render.canvas.getBoundingClientRect()
+
+				const mousePosition = {
+					x: touch.clientX - rect.left,
+					y: touch.clientY - rect.top,
+				}
+
+				// Обновляем позицию
+				Mouse.setPosition(mouse, mousePosition)
+
+				// Если есть активный constraint, обновляем его pointA
+				if (touchConstraint) {
+					touchConstraint.pointA = mousePosition
+				}
 			}
 
 			const handleTouchEnd = (e: TouchEvent): void => {
-				e.preventDefault()
-				const mouseEvent = new MouseEvent('mouseup')
-				render.canvas.dispatchEvent(mouseEvent)
+				// Удаляем constraint при отпускании
+				if (touchConstraint) {
+					World.remove(engine.world, touchConstraint)
+					touchConstraint = null
+				}
 			}
 
-			// Добавляем touch события
 			render.canvas.addEventListener('touchstart', handleTouchStart, {
-				passive: false,
+				passive: true,
 			})
 			render.canvas.addEventListener('touchmove', handleTouchMove, {
 				passive: false,
 			})
 			render.canvas.addEventListener('touchend', handleTouchEnd, {
-				passive: false,
+				passive: true,
+			})
+			render.canvas.addEventListener('touchcancel', handleTouchEnd, {
+				passive: true,
 			})
 
-			// Функция для обновления позиций SVG
 			const updateSVGPositions = (): void => {
 				if (!svgOverlayRef.current) return
 
@@ -294,7 +328,6 @@ const FooterGame = () => {
 				World.add(engine.world, newWalls)
 			}
 
-			// Сохраняем функцию очистки
 			cleanup = (): void => {
 				window.removeEventListener('resize', handleResize)
 				Runner.stop(runner)
@@ -302,18 +335,17 @@ const FooterGame = () => {
 				World.clear(engine.world, false)
 				Engine.clear(engine)
 
-				// Удаляем touch события
 				if (render.canvas) {
 					render.canvas.removeEventListener('touchstart', handleTouchStart)
 					render.canvas.removeEventListener('touchmove', handleTouchMove)
 					render.canvas.removeEventListener('touchend', handleTouchEnd)
+					render.canvas.removeEventListener('touchcancel', handleTouchEnd)
 				}
 			}
 		}
 
 		initPhysics()
 
-		// Возвращаем функцию очистки
 		return (): void => {
 			if (cleanup) {
 				cleanup()
