@@ -352,7 +352,7 @@ const developers = [
 
 export default function Home() {
 	return (
-		<div className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 p-4 sm:p-6 gap-3'>
+		<div className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  gap-3'>
 			{developers.map(card => (
 				<DeveloperCard key={card.id} credentials={card} />
 			))}
