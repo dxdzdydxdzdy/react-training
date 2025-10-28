@@ -1,5 +1,3 @@
-import DeveloperCard from './components/DeveloperCard'
-
 const developers = [
 	{
 		id: 1,
@@ -353,9 +351,9 @@ const developers = [
 export default function Home() {
 	return (
 		<div className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  gap-3'>
-			{developers.map(card => (
+			{/* {developers.map(card => (
 				<DeveloperCard key={card.id} credentials={card} />
-			))}
+			))} */}
 		</div>
 	)
 }
